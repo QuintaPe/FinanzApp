@@ -8,8 +8,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "seed": "node src/lib/seed.js",
-    "db:init": "node -e \"import('./src/lib/database.js').then(db => db.initializeDatabase())\"",
-    "test:db": "node src/lib/test-db.js"
+    "db:init": "node -e \"import('./src/lib/database.js').then(db => db.initializeDatabase())\""
   },
   "dependencies": {
     "@astrojs/vercel": "^8.2.2",

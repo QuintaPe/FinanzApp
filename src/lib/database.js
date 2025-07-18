@@ -376,5 +376,3 @@ export const db = {
   }
 };
 
-// Initialize database on module load
-initializeDatabase().catch(console.error);
