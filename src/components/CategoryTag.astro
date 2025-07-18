@@ -1,0 +1,92 @@
+---
+export interface Props {
+  category: 'food' | 'transport' | 'entertainment' | 'shopping' | 'health' | 'education' | 'housing' | 'utilities' | 'salary' | 'freelance' | 'investment' | 'gift' | 'other';
+  text?: string;
+}
+
+const { category, text } = Astro.props;
+
+const categoryText = text || category.charAt(0).toUpperCase() + category.slice(1);
+---
+
+<span class={`category-tag category-${category}`}>
+  {categoryText}
+</span>
+
+<style>
+  .category-tag {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Expense Categories */
+  .category-food {
+    background: #FF9800;
+    color: white;
+  }
+
+  .category-transport {
+    background: #2196F3;
+    color: white;
+  }
+
+  .category-entertainment {
+    background: #9C27B0;
+    color: white;
+  }
+
+  .category-shopping {
+    background: #E91E63;
+    color: white;
+  }
+
+  .category-health {
+    background: #F44336;
+    color: white;
+  }
+
+  .category-education {
+    background: #3F51B5;
+    color: white;
+  }
+
+  .category-housing {
+    background: #795548;
+    color: white;
+  }
+
+  .category-utilities {
+    background: #607D8B;
+    color: white;
+  }
+
+  /* Income Categories */
+  .category-salary {
+    background: #4CAF50;
+    color: white;
+  }
+
+  .category-freelance {
+    background: #8BC34A;
+    color: white;
+  }
+
+  .category-investment {
+    background: #FFC107;
+    color: white;
+  }
+
+  .category-gift {
+    background: #FF5722;
+    color: white;
+  }
+
+  .category-other {
+    background: #9E9E9E;
+    color: white;
+  }
+</style> 

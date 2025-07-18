@@ -1,0 +1,754 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+import Button from '../components/Button.astro';
+import Modal from '../components/Modal.astro';
+import { api, formatters } from '../lib/api.js';
+
+// Fetch real data from the API
+let goals;
+let goalStats;
+
+try {
+  goals = await api.getGoals();
+  
+  // Calculate goal statistics
+  const totalGoals = goals.length;
+  const activeGoals = goals.filter(goal => goal.status === 'active').length;
+  const completedGoals = goals.filter(goal => goal.status === 'completed').length;
+  const totalTargetAmount = goals.reduce((sum, goal) => sum + goal.target_amount, 0);
+  const totalCurrentAmount = goals.reduce((sum, goal) => sum + goal.current_amount, 0);
+  const totalProgress = totalTargetAmount > 0 ? (totalCurrentAmount / totalTargetAmount) * 100 : 0;
+  
+  goalStats = {
+    totalGoals,
+    activeGoals,
+    completedGoals,
+    totalTargetAmount,
+    totalCurrentAmount,
+    totalProgress
+  };
+} catch (error) {
+  console.error('Error fetching goals data:', error);
+  goals = [];
+  goalStats = {
+    totalGoals: 0,
+    activeGoals: 0,
+    completedGoals: 0,
+    totalTargetAmount: 0,
+    totalCurrentAmount: 0,
+    totalProgress: 0
+  };
+}
+---
+
+<Layout title="FinanzApp - Metas Financieras" currentPage="/goals">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>Metas Financieras</h1>
+      <p>Establece y alcanza tus objetivos financieros</p>
+    </div>
+    <div class="header-actions">
+      <Button variant="primary" size="small" onclick="openNewGoalModal()">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+        </svg>
+        Nueva Meta
+      </Button>
+    </div>
+  </div>
+
+  <!-- Goals Summary Cards -->
+  <div class="grid grid-4 mb-3">
+    <Card class="summary-card">
+      <div class="summary-content">
+        <div class="summary-icon total-icon">
+          <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <div class="summary-info">
+          <h3>Total Metas</h3>
+          <div class="summary-amount">{goalStats.totalGoals}</div>
+          <div class="summary-period">Configuradas</div>
+        </div>
+      </div>
+    </Card>
+
+    <Card class="summary-card">
+      <div class="summary-content">
+        <div class="summary-icon active-icon">
+          <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <div class="summary-info">
+          <h3>Metas Activas</h3>
+          <div class="summary-amount">{goalStats.activeGoals}</div>
+          <div class="summary-period">En progreso</div>
+        </div>
+      </div>
+    </Card>
+
+    <Card class="summary-card">
+      <div class="summary-content">
+        <div class="summary-icon completed-icon">
+          <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <div class="summary-info">
+          <h3>Completadas</h3>
+          <div class="summary-amount">{goalStats.completedGoals}</div>
+          <div class="summary-period">Logradas</div>
+        </div>
+      </div>
+    </Card>
+
+    <Card class="summary-card">
+      <div class="summary-content">
+        <div class="summary-icon progress-icon">
+          <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+          </svg>
+        </div>
+        <div class="summary-info">
+          <h3>Progreso Total</h3>
+          <div class="summary-amount">{goalStats.totalProgress.toFixed(1)}%</div>
+          <div class="summary-period">General</div>
+        </div>
+      </div>
+    </Card>
+  </div>
+
+  <!-- Goals Grid -->
+  <div class="goals-container">
+    {goals.length > 0 ? (
+      <div class="goals-grid">
+        {goals.map(goal => {
+          const percentage = goal.target_amount > 0 ? (goal.current_amount / goal.target_amount) * 100 : 0;
+          const isCompleted = goal.status === 'completed';
+          const isPaused = goal.status === 'paused';
+          
+          return (
+            <Card class={`goal-card ${isCompleted ? 'completed' : ''} ${isPaused ? 'paused' : ''}`}>
+              <div class="goal-header">
+                <div class="goal-info">
+                  <h3 class="goal-name">{goal.name}</h3>
+                  <div class="goal-amounts">
+                    <span class="current-amount">{formatters.currency(goal.current_amount)}</span>
+                    <span class="separator">/</span>
+                    <span class="target-amount">{formatters.currency(goal.target_amount)}</span>
+                  </div>
+                </div>
+                <div class="goal-status">
+                  {isCompleted && (
+                    <span class="status-badge completed">
+                      <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                      </svg>
+                      Completada
+                    </span>
+                  )}
+                  {isPaused && (
+                    <span class="status-badge paused">
+                      <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                      </svg>
+                      Pausada
+                    </span>
+                  )}
+                  {!isCompleted && !isPaused && (
+                    <span class="status-badge active">
+                      <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                      </svg>
+                      Activa
+                    </span>
+                  )}
+                </div>
+              </div>
+              
+              <div class="goal-progress">
+                <div class="progress-bar">
+                  <div 
+                    class={`progress-fill ${isCompleted ? 'completed' : ''} ${isPaused ? 'paused' : ''}`} 
+                    style={`width: ${Math.min(percentage, 100)}%`}
+                  ></div>
+                </div>
+                <div class="progress-info">
+                  <span class="progress-percentage">{percentage.toFixed(1)}%</span>
+                  {goal.deadline && (
+                    <span class="deadline">
+                      Fecha límite: {formatters.date(goal.deadline)}
+                    </span>
+                  )}
+                </div>
+              </div>
+              
+              <div class="goal-actions">
+                <button class="action-btn edit-btn" onclick={`editGoal(${goal.id})`}>
+                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                  </svg>
+                  Editar
+                </button>
+                <button class="action-btn progress-btn" onclick={`updateProgress(${goal.id})`}>
+                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                  </svg>
+                  Progreso
+                </button>
+                <button class="action-btn delete-btn" onclick={`deleteGoal(${goal.id})`}>
+                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                  </svg>
+                  Eliminar
+                </button>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+    ) : (
+      <div class="empty-state">
+        <p>No hay metas financieras configuradas</p>
+      </div>
+    )}
+  </div>
+
+  <!-- New Goal Modal -->
+  <Modal id="newGoalModal" title="Nueva Meta Financiera">
+    <form class="goal-form" onsubmit="saveGoal(event)">
+      <div class="form-group">
+        <label for="goalName">Nombre de la Meta</label>
+        <input type="text" id="goalName" name="name" required placeholder="Ej: Vacaciones de verano">
+      </div>
+      
+      <div class="form-group">
+        <label for="goalTargetAmount">Monto Objetivo</label>
+        <input type="number" id="goalTargetAmount" name="targetAmount" step="0.01" min="0" required placeholder="0.00">
+      </div>
+      
+      <div class="form-group">
+        <label for="goalDeadline">Fecha Límite (opcional)</label>
+        <input type="date" id="goalDeadline" name="deadline">
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" onclick="closeNewGoalModal()">Cancelar</button>
+        <button type="submit" class="btn-primary">Guardar Meta</button>
+      </div>
+    </form>
+  </Modal>
+
+  <!-- Update Progress Modal -->
+  <Modal id="updateProgressModal" title="Actualizar Progreso">
+    <form class="progress-form" onsubmit="updateGoalProgress(event)">
+      <div class="form-group">
+        <label for="progressAmount">Monto Actual</label>
+        <input type="number" id="progressAmount" name="currentAmount" step="0.01" min="0" required placeholder="0.00">
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" onclick="closeUpdateProgressModal()">Cancelar</button>
+        <button type="submit" class="btn-primary">Actualizar</button>
+      </div>
+    </form>
+  </Modal>
+
+  <style>
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .header-content h1 {
+      color: #ffffff;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .header-content p {
+      color: #cccccc;
+      font-size: 16px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .summary-card {
+      background: #1A1A1A !important;
+      border: 1px solid #333;
+    }
+
+    .summary-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .summary-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .total-icon {
+      background: linear-gradient(135deg, #2196F3, #1976D2);
+    }
+
+    .active-icon {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+    }
+
+    .completed-icon {
+      background: linear-gradient(135deg, #9C27B0, #7B1FA2);
+    }
+
+    .progress-icon {
+      background: linear-gradient(135deg, #FF9800, #f57c00);
+    }
+
+    .summary-info h3 {
+      color: #cccccc;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .summary-amount {
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .summary-period {
+      color: #888888;
+      font-size: 12px;
+    }
+
+    .goals-container {
+      margin-top: 32px;
+    }
+
+    .goals-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 24px;
+    }
+
+    .goal-card {
+      background: #1A1A1A !important;
+      border: 1px solid #333;
+      transition: all 0.3s ease;
+    }
+
+    .goal-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .goal-card.completed {
+      border-color: #4CAF50;
+    }
+
+    .goal-card.paused {
+      border-color: #FF9800;
+      opacity: 0.7;
+    }
+
+    .goal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .goal-info {
+      flex: 1;
+    }
+
+    .goal-name {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .goal-amounts {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .current-amount {
+      color: #4CAF50;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .separator {
+      color: #888888;
+      font-size: 16px;
+    }
+
+    .target-amount {
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .goal-status {
+      margin-left: 16px;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .status-badge.active {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .status-badge.completed {
+      background: #9C27B0;
+      color: white;
+    }
+
+    .status-badge.paused {
+      background: #FF9800;
+      color: white;
+    }
+
+    .goal-progress {
+      margin-bottom: 20px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #333;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4CAF50, #45a049);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-fill.completed {
+      background: linear-gradient(90deg, #9C27B0, #7B1FA2);
+    }
+
+    .progress-fill.paused {
+      background: linear-gradient(90deg, #FF9800, #f57c00);
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .progress-percentage {
+      color: #4CAF50;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .deadline {
+      color: #888888;
+      font-size: 12px;
+    }
+
+    .goal-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .edit-btn {
+      background: #2196F3;
+      color: white;
+    }
+
+    .edit-btn:hover {
+      background: #1976D2;
+    }
+
+    .progress-btn {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .progress-btn:hover {
+      background: #45a049;
+    }
+
+    .delete-btn {
+      background: #F44336;
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background: #d32f2f;
+    }
+
+    .goal-form,
+    .progress-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      padding: 12px;
+      border: 1px solid #333;
+      border-radius: 8px;
+      background: #2C2C2C;
+      color: #ffffff;
+      font-size: 14px;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #6366f1;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: #6366f1;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #4f46e5;
+    }
+
+    .btn-secondary {
+      background: #2C2C2C;
+      color: #ffffff;
+      border: 1px solid #333;
+    }
+
+    .btn-secondary:hover {
+      background: #333;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #888888;
+    }
+
+    .empty-state p {
+      font-size: 16px;
+    }
+  </style>
+
+  <script>
+    let currentGoalId = null;
+
+    // Set today's date as default
+    document.addEventListener('DOMContentLoaded', function() {
+      const today = new Date().toISOString().split('T')[0];
+      const dateInput = document.getElementById('goalDeadline');
+      if (dateInput) {
+        dateInput.value = today;
+      }
+    });
+
+    function openNewGoalModal() {
+      const modal = document.getElementById('newGoalModal');
+      if (modal) {
+        modal.classList.add('show');
+      }
+    }
+
+    function closeNewGoalModal() {
+      const modal = document.getElementById('newGoalModal');
+      if (modal) {
+        modal.classList.remove('show');
+        // Reset form
+        document.querySelector('.goal-form').reset();
+      }
+    }
+
+    function openUpdateProgressModal(goalId) {
+      currentGoalId = goalId;
+      const modal = document.getElementById('updateProgressModal');
+      if (modal) {
+        modal.classList.add('show');
+      }
+    }
+
+    function closeUpdateProgressModal() {
+      const modal = document.getElementById('updateProgressModal');
+      if (modal) {
+        modal.classList.remove('show');
+        // Reset form
+        document.querySelector('.progress-form').reset();
+        currentGoalId = null;
+      }
+    }
+
+    async function saveGoal(event) {
+      event.preventDefault();
+      
+      const formData = new FormData(event.target);
+      const goalData = {
+        name: formData.get('name'),
+        targetAmount: parseFloat(formData.get('targetAmount')),
+        deadline: formData.get('deadline') || null
+      };
+
+      try {
+        const response = await fetch('/api/goals', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(goalData)
+        });
+
+        if (response.ok) {
+          closeNewGoalModal();
+          // Reload page to show new data
+          window.location.reload();
+        } else {
+          const error = await response.json();
+          alert('Error al guardar la meta: ' + error.error);
+        }
+      } catch (error) {
+        console.error('Error saving goal:', error);
+        alert('Error al guardar la meta');
+      }
+    }
+
+    async function updateGoalProgress(event) {
+      event.preventDefault();
+      
+      if (!currentGoalId) return;
+      
+      const formData = new FormData(event.target);
+      const currentAmount = parseFloat(formData.get('currentAmount'));
+
+      try {
+        const response = await fetch(`/api/goals?id=${currentGoalId}&action=progress`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ currentAmount })
+        });
+
+        if (response.ok) {
+          closeUpdateProgressModal();
+          // Reload page to show updated data
+          window.location.reload();
+        } else {
+          const error = await response.json();
+          alert('Error al actualizar el progreso: ' + error.error);
+        }
+      } catch (error) {
+        console.error('Error updating progress:', error);
+        alert('Error al actualizar el progreso');
+      }
+    }
+
+    async function editGoal(id) {
+      // TODO: Implement edit functionality
+      console.log('Edit goal:', id);
+    }
+
+    async function updateProgress(id) {
+      openUpdateProgressModal(id);
+    }
+
+    async function deleteGoal(id) {
+      if (confirm('¿Estás seguro de que quieres eliminar esta meta?')) {
+        // TODO: Implement delete functionality
+        console.log('Delete goal:', id);
+      }
+    }
+
+    // Close modals when clicking outside
+    document.addEventListener('click', function(event) {
+      const newGoalModal = document.getElementById('newGoalModal');
+      const updateProgressModal = document.getElementById('updateProgressModal');
+      
+      if (event.target === newGoalModal) {
+        closeNewGoalModal();
+      }
+      
+      if (event.target === updateProgressModal) {
+        closeUpdateProgressModal();
+      }
+    });
+  </script>
+</Layout> 

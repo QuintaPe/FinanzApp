@@ -1,0 +1,96 @@
+---
+export interface Props {
+  id: string;
+  title: string;
+}
+
+const { id, title } = Astro.props;
+---
+<dialog id={id}>
+  <div class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">{title}</h2>
+        <button class="close-btn" onclick={`document.getElementById('${id}').close()`}>&times;</button>
+      </div>
+      <div class="modal-content">
+        <slot />
+      </div>
+    </div>
+</div>
+</dialog>
+
+<style>
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: all 0.3s ease;
+  }
+
+  .modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal {
+    background: #2C2C2C;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+
+  .modal-overlay.show .modal {
+    transform: scale(1);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .modal-title {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: #cccccc;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .close-btn:hover {
+    background: #444;
+    color: white;
+  }
+
+  .modal-content {
+    color: #ffffff;
+  }
+</style>
+
+<script>
+  // The dialog element has built-in close functionality
+  // No additional JavaScript needed for basic close behavior
+</script>

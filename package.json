@@ -1,14 +1,20 @@
 {
-  "name": "",
+  "name": "FinanzApp",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "seed": "node src/lib/seed.js",
+    "db:init": "node -e \"import('./src/lib/database.js').then(db => db.initializeDatabase())\"",
+    "test:db": "node src/lib/test-db.js"
   },
   "dependencies": {
-    "astro": "^5.12.0"
+    "@libsql/client": "^0.5.6",
+    "@tailwindcss/vite": "^4.1.11",
+    "astro": "^5.12.0",
+    "tailwindcss": "^4.1.11"
   }
 }

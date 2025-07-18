@@ -1,0 +1,66 @@
+---
+export interface Props {
+  headers: string[];
+  class?: string;
+}
+
+const { headers, class: className = '' } = Astro.props;
+---
+
+<div class={`table-container ${className}`}>
+  <table class="table">
+    <thead>
+      <tr>
+        {headers.map(header => (
+          <th>{header}</th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      <slot />
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .table th {
+    background: #1A1A1A;
+    color: #cccccc;
+    font-weight: 600;
+    text-align: left;
+    padding: 16px 12px;
+    border-bottom: 1px solid #333;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .table td {
+    padding: 16px 12px;
+    border-bottom: 1px solid #333;
+    color: #ffffff;
+    vertical-align: middle;
+  }
+
+  .table tbody tr {
+    transition: background-color 0.2s ease;
+  }
+
+  .table tbody tr:hover {
+    background: #2C2C2C;
+  }
+
+  .table tbody tr:last-child td {
+    border-bottom: none;
+  }
+</style> 

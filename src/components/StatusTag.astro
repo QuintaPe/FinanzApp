@@ -1,0 +1,40 @@
+---
+export interface Props {
+  status: 'approved' | 'pending' | 'declined';
+  text?: string;
+}
+
+const { status, text } = Astro.props;
+
+const statusText = text || status.charAt(0).toUpperCase() + status.slice(1);
+---
+
+<span class={`status-tag status-${status}`}>
+  {statusText}
+</span>
+
+<style>
+  .status-tag {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .status-approved {
+    background: #4CAF50;
+    color: white;
+  }
+
+  .status-pending {
+    background: #8A2BE2;
+    color: white;
+  }
+
+  .status-declined {
+    background: #DC3545;
+    color: white;
+  }
+</style> 

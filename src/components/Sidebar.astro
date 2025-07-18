@@ -1,0 +1,195 @@
+---
+export interface Props {
+  currentPage?: string;
+}
+
+const { currentPage = '/' } = Astro.props;
+---
+
+<aside class="sidebar">
+  <div class="user-profile">
+    <div class="profile-picture">
+      <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=64&h=64&fit=crop&crop=face" alt="Janice Chandler" />
+    </div>
+    <div class="user-name">Janice Chandler</div>
+  </div>
+
+  <nav class="nav-menu">
+    <a href="/" class={`nav-item ${currentPage === '/' ? 'active' : ''}`}>
+      <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+      </svg>
+      <span class="nav-text">Dashboard</span>
+    </a>
+    <a href="/expenses" class={`nav-item ${currentPage === '/expenses' ? 'active' : ''}`}>
+      <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"/>
+      </svg>
+      <span class="nav-text">Gastos</span>
+    </a>
+    <a href="/income" class={`nav-item ${currentPage === '/income' ? 'active' : ''}`}>
+      <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/>
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
+      </svg>
+      <span class="nav-text">Ingresos</span>
+    </a>
+    <a href="/budgets" class={`nav-item ${currentPage === '/budgets' ? 'active' : ''}`}>
+      <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+      </svg>
+      <span class="nav-text">Presupuestos</span>
+    </a>
+    <a href="/goals" class={`nav-item ${currentPage === '/goals' ? 'active' : ''}`}>
+      <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+      </svg>
+      <span class="nav-text">Metas</span>
+    </a>
+    <a href="/reports" class={`nav-item ${currentPage === '/reports' ? 'active' : ''}`}>
+      <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+      </svg>
+      <span class="nav-text">Reportes</span>
+    </a>
+    <a href="/settings" class={`nav-item ${currentPage === '/settings' ? 'active' : ''}`}>
+      <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+      </svg>
+      <span class="nav-text">Configuración</span>
+    </a>
+  </nav>
+
+  <div class="logo">
+    <svg class="logo-icon" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+    </svg>
+    <span class="logo-text">FinanzApp</span>
+  </div>
+</aside>
+
+<style>
+  .sidebar {
+    width: 280px;
+    background: #1A1A1A;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px 0 0 16px;
+    margin: 16px 0 16px 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .user-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #333;
+  }
+
+  .profile-picture {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 12px;
+    border: 3px solid #4CAF50;
+  }
+
+  .profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .user-name {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .nav-menu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #cccccc;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .nav-item:hover {
+    background: #2C2C2C;
+    color: #ffffff;
+  }
+
+  .nav-item.active {
+    background: #2C2C2C;
+    color: #4CAF50;
+    border-left: 4px solid #4CAF50;
+  }
+
+  .nav-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    color: inherit;
+  }
+
+  .logo {
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .logo-icon {
+    width: 24px;
+    height: 24px;
+    color: #4CAF50;
+  }
+
+  .logo-text {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 80px;
+      padding: 16px 8px;
+    }
+
+    .user-name,
+    .nav-text,
+    .logo-text {
+      display: none;
+    }
+
+    .nav-item {
+      justify-content: center;
+      padding: 12px 8px;
+    }
+
+    .nav-icon {
+      margin-right: 0;
+    }
+  }
+</style> 

@@ -1,0 +1,356 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+import Button from '../components/Button.astro';
+---
+
+<Layout title="EXPensio - Settings" currentPage="/settings">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>Settings</h1>
+      <p class="subtitle">Manage your account and preferences</p>
+    </div>
+  </div>
+
+  <!-- Account Settings -->
+  <Card 
+    title="Account Settings" 
+    icon="<path fill-rule='evenodd' d='M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z' clip-rule='evenodd'/>"
+  >
+    <form class="settings-form">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-input" value="Janice" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input type="text" class="form-input" value="Chandler" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" value="janice.chandler@company.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input type="tel" class="form-input" value="+1 (555) 123-4567" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Department</label>
+          <select class="form-select">
+            <option value="marketing">Marketing</option>
+            <option value="operations">Operations</option>
+            <option value="finance">Finance</option>
+            <option value="hr">Human Resources</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Position</label>
+          <input type="text" class="form-input" value="Senior Manager" />
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <Button variant="primary">Save Changes</Button>
+      </div>
+    </form>
+  </Card>
+
+  <!-- Notification Settings -->
+  <Card 
+    title="Notification Settings" 
+    icon="<path d='M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z'/>"
+  >
+    <div class="notification-settings">
+      <div class="notification-item">
+        <div class="notification-info">
+          <h4>Email Notifications</h4>
+          <p>Receive notifications about expense approvals and updates via email</p>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" checked />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      
+      <div class="notification-item">
+        <div class="notification-info">
+          <h4>Push Notifications</h4>
+          <p>Get instant notifications on your device for important updates</p>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" checked />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      
+      <div class="notification-item">
+        <div class="notification-info">
+          <h4>Weekly Reports</h4>
+          <p>Receive weekly expense summaries and reports</p>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      
+      <div class="notification-item">
+        <div class="notification-info">
+          <h4>Approval Reminders</h4>
+          <p>Get reminded about pending approvals that need your attention</p>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" checked />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+  </Card>
+
+  <!-- Security Settings -->
+  <Card 
+    title="Security Settings" 
+    icon="<path fill-rule='evenodd' d='M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z' clip-rule='evenodd'/>"
+  >
+    <div class="security-settings">
+      <div class="security-item">
+        <div class="security-info">
+          <h4>Two-Factor Authentication</h4>
+          <p>Add an extra layer of security to your account</p>
+        </div>
+        <Button variant="outline">Enable</Button>
+      </div>
+      
+      <div class="security-item">
+        <div class="security-info">
+          <h4>Change Password</h4>
+          <p>Update your account password regularly</p>
+        </div>
+        <Button variant="outline">Change</Button>
+      </div>
+      
+      <div class="security-item">
+        <div class="security-info">
+          <h4>Login History</h4>
+          <p>View recent login activity and sessions</p>
+        </div>
+        <Button variant="outline">View</Button>
+      </div>
+    </div>
+  </Card>
+
+  <!-- Preferences -->
+  <Card 
+    title="Preferences" 
+    icon="<path fill-rule='evenodd' d='M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z' clip-rule='evenodd'/>"
+  >
+    <div class="preferences-settings">
+      <div class="preference-item">
+        <div class="preference-info">
+          <h4>Language</h4>
+          <p>Choose your preferred language</p>
+        </div>
+        <select class="form-select" style="width: 200px;">
+          <option value="en">English</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+        </select>
+      </div>
+      
+      <div class="preference-item">
+        <div class="preference-info">
+          <h4>Currency</h4>
+          <p>Set your default currency for expenses</p>
+        </div>
+        <select class="form-select" style="width: 200px;">
+          <option value="EUR">Euro (€)</option>
+          <option value="USD">US Dollar ($)</option>
+          <option value="GBP">British Pound (£)</option>
+          <option value="JPY">Japanese Yen (¥)</option>
+        </select>
+      </div>
+      
+      <div class="preference-item">
+        <div class="preference-info">
+          <h4>Time Zone</h4>
+          <p>Set your local time zone</p>
+        </div>
+        <select class="form-select" style="width: 200px;">
+          <option value="UTC">UTC</option>
+          <option value="EST">Eastern Time</option>
+          <option value="PST">Pacific Time</option>
+          <option value="CET">Central European Time</option>
+        </select>
+      </div>
+      
+      <div class="preference-item">
+        <div class="preference-info">
+          <h4>Theme</h4>
+          <p>Choose your preferred theme</p>
+        </div>
+        <select class="form-select" style="width: 200px;">
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+          <option value="auto">Auto</option>
+        </select>
+      </div>
+    </div>
+  </Card>
+
+  <style>
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .header-content h1 {
+      color: #ffffff;
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #cccccc;
+      font-size: 16px;
+    }
+
+    .settings-form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .notification-settings,
+    .security-settings,
+    .preferences-settings {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .notification-item,
+    .security-item,
+    .preference-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      background: #1A1A1A;
+      border-radius: 8px;
+    }
+
+    .notification-info,
+    .security-info,
+    .preference-info {
+      flex: 1;
+    }
+
+    .notification-info h4,
+    .security-info h4,
+    .preference-info h4 {
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .notification-info p,
+    .security-info p,
+    .preference-info p {
+      color: #cccccc;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    /* Toggle Switch */
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #444;
+      transition: .4s;
+      border-radius: 24px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background-color: #4CAF50;
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(26px);
+    }
+
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .notification-item,
+      .security-item,
+      .preference-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+    }
+  </style>
+
+  <script>
+    // Handle form submission
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.querySelector('.settings-form');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          console.log('Settings saved');
+          alert('Settings saved successfully!');
+        });
+      }
+    });
+  </script>
+</Layout> 
