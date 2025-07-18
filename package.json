@@ -12,6 +12,7 @@
     "test:db": "node src/lib/test-db.js"
   },
   "dependencies": {
+    "@astrojs/vercel": "^8.2.2",
     "@libsql/client": "^0.5.6",
     "@tailwindcss/vite": "^4.1.11",
     "astro": "^5.12.0",
