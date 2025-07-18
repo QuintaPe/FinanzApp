@@ -1,4 +1,4 @@
-# EXPensio - Personal Finance Management
+# FinanzApp - Personal Finance Management
 
 Una aplicación moderna para gestionar tus finanzas personales con un diseño elegante y funcionalidades completas.
 

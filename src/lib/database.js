@@ -1,10 +1,10 @@
-import { createClient } from '@libsql/client';
+  import { createClient } from '@libsql/client';
 
-// Turso database configuration
-const client = createClient({
-  url: "libsql://finanzapp-quintape.aws-eu-west-1.turso.io",
-  authToken: "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3ODQzODAwNDksImlhdCI6MTc1Mjg0NDA0OSwiaWQiOiI0OTViOTIwNC0xZWRhLTQyNDYtYTYyZi01MjdiMGI3MThkM2QiLCJyaWQiOiI2ZjljZTA2Ny0zNjkxLTRmYTYtODYwYS02MTI4NzM5YWU0Y2QifQ.2nkMMT2kq4Afs1JNrvDg0OI6UFKQEAsPT6nbaNTPjGTtSJf4JMlbvmF4fjALjknwlpeWBYbMMu588Y1rHro5Bw",
-});
+  // Turso database configuration
+  const client = createClient({
+    url: import.meta.env.TURSO_DATABASE_URL,
+    authToken: import.meta.env.TURSO_AUTH_TOKEN,
+  });
 
 // Initialize database with tables
 export async function initializeDatabase() {
