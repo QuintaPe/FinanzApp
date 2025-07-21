@@ -1,18 +1,46 @@
 // API endpoint for dashboard data
-import { db } from '../../lib/database.js';
+import { Transaction } from '../../lib/models/Transaction.js';
+import { Category } from '../../lib/models/Category.js';
 
-export async function GET({ request }) {
+export async function GET({ request, url }) {
   try {
-    // For now, we'll use a default user ID (1) - in a real app, this would come from authentication
-    const userId = 1;
-    const data = await db.getDashboardData(userId);
+    const userId = 1; // Default user ID
     
-    return new Response(JSON.stringify(data), {
+    // Get current month data
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+    
+    // Get monthly totals
+    const monthlyTotals = await Transaction.getMonthlyTotals(userId, currentYear, currentMonth);
+    const totalIncome = monthlyTotals.total_income || 0;
+    const totalExpense = monthlyTotals.total_expense || 0;
+    const balance = totalIncome - totalExpense;
+    
+    // Get category breakdown for expenses
+    const categoriesData = await Transaction.getCategoryBreakdown(userId, currentYear, currentMonth);
+    
+    // Get last 6 months data
+    const monthlyData = await Transaction.getMonthlyTrend(userId, 6);
+    
+    // Get recent transactions
+    const recentTransactions = await Transaction.getRecentTransactions(userId, 5);
+    
+    const dashboardData = {
+      totalIncome,
+      totalExpense,
+      balance,
+      categoriesData,
+      monthlyData,
+      recentTransactions
+    };
+    
+    return new Response(JSON.stringify(dashboardData), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
-    console.error('Dashboard API error:', error);
+    console.error('Get dashboard data error:', error);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }

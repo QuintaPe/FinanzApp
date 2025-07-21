@@ -5,7 +5,10 @@ import Button from '../components/Button.astro';
 import Table from '../components/Table.astro';
 import CategoryTag from '../components/CategoryTag.astro';
 import Modal from '../components/Modal.astro';
-import { api, formatters } from '../lib/api.js';
+import Budget from '../repository/Budget.js';
+import Category from '../repository/Category.js';
+
+import { formatters } from '../utils/index.js';
 
 // Fetch real data from the API
 let budgets;
@@ -13,8 +16,8 @@ let expenseCategories;
 let budgetStats;
 
 try {
-  budgets = await api.getBudgets();
-  expenseCategories = await api.getCategories('expense');
+  budgets = await Budget.getBudgets();
+  expenseCategories = await Category.getCategories('expense');
   
   // Calculate budget statistics
   const totalBudget = budgets.reduce((sum, budget) => sum + budget.amount, 0);

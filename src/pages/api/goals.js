@@ -1,9 +1,9 @@
-import { db } from '../../lib/database.js';
+import { Goal } from '../../lib/models/Goal.js';
 
 export async function GET({ request, url }) {
   try {
     const userId = 1; // Default user ID
-    const goals = await db.getGoals(userId);
+    const goals = await Goal.findByUser(userId);
     
     return new Response(JSON.stringify(goals), {
       status: 200,
@@ -31,11 +31,10 @@ export async function POST({ request }) {
       });
     }
     
-    const goalId = await db.createGoal(userId, name, targetAmount, deadline);
-    const goals = await db.getGoals(userId);
-    const newGoal = goals.find(goal => goal.id === goalId);
+    const goalId = await Goal.create(userId, name, targetAmount, deadline);
+    const goal = await Goal.findById(goalId);
     
-    return new Response(JSON.stringify(newGoal), {
+    return new Response(JSON.stringify(goal), {
       status: 201,
       headers: { 'Content-Type': 'application/json' }
     });
@@ -52,10 +51,10 @@ export async function PUT({ request, url }) {
   try {
     const searchParams = url.searchParams;
     const id = parseInt(searchParams.get('id'));
-    const action = searchParams.get('action'); // 'progress' or 'status'
+    const action = searchParams.get('action');
     
     if (!id || !action) {
-      return new Response(JSON.stringify({ error: 'Goal ID and action are required' }), {
+      return new Response(JSON.stringify({ error: 'ID and action are required' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -65,22 +64,20 @@ export async function PUT({ request, url }) {
     
     if (action === 'progress') {
       const { currentAmount } = body;
-      await db.updateGoalProgress(id, currentAmount);
+      await Goal.updateProgress(id, currentAmount);
     } else if (action === 'status') {
       const { status } = body;
-      if (!['active', 'completed', 'paused'].includes(status)) {
-        return new Response(JSON.stringify({ error: 'Invalid status' }), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' }
-        });
-      }
-      await db.updateGoalStatus(id, status);
+      await Goal.updateStatus(id, status);
+    } else {
+      return new Response(JSON.stringify({ error: 'Invalid action' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
     
-    const goals = await db.getGoals(1);
-    const updatedGoal = goals.find(goal => goal.id === id);
+    const goal = await Goal.findById(id);
     
-    return new Response(JSON.stringify(updatedGoal), {
+    return new Response(JSON.stringify(goal), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });

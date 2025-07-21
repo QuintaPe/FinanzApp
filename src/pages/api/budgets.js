@@ -1,9 +1,9 @@
-import { db } from '../../lib/database.js';
+import { Budget } from '../../lib/models/Budget.js';
 
 export async function GET({ request, url }) {
   try {
     const userId = 1; // Default user ID
-    const budgets = await db.getBudgets(userId);
+    const budgets = await Budget.findByUser(userId);
     
     return new Response(JSON.stringify(budgets), {
       status: 200,
@@ -31,18 +31,10 @@ export async function POST({ request }) {
       });
     }
     
-    if (!['monthly', 'yearly'].includes(period)) {
-      return new Response(JSON.stringify({ error: 'Period must be either "monthly" or "yearly"' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
+    const budgetId = await Budget.create(userId, categoryId, amount, period, startDate, endDate);
+    const budget = await Budget.findById(budgetId);
     
-    const budgetId = await db.createBudget(userId, categoryId, amount, period, startDate, endDate);
-    const budgets = await db.getBudgets(userId);
-    const newBudget = budgets.find(budget => budget.id === budgetId);
-    
-    return new Response(JSON.stringify(newBudget), {
+    return new Response(JSON.stringify(budget), {
       status: 201,
       headers: { 'Content-Type': 'application/json' }
     });

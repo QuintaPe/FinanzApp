@@ -1,11 +1,11 @@
-import { db } from '../../lib/database.js';
+import { Category } from '../../lib/models/Category.js';
 
 export async function GET({ request, url }) {
   try {
     const searchParams = url.searchParams;
-    const type = searchParams.get('type'); // 'income' or 'expense'
+    const type = searchParams.get('type');
     
-    const categories = await db.getCategories(type);
+    const categories = await Category.findByType(type);
     
     return new Response(JSON.stringify(categories), {
       status: 200,
@@ -32,18 +32,10 @@ export async function POST({ request }) {
       });
     }
     
-    if (!['income', 'expense'].includes(type)) {
-      return new Response(JSON.stringify({ error: 'Type must be either "income" or "expense"' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
+    const categoryId = await Category.create(name, type, color, icon);
+    const category = await Category.findById(categoryId);
     
-    const categoryId = await db.createCategory(name, type, color, icon);
-    const categories = await db.getCategories();
-    const newCategory = categories.find(cat => cat.id === categoryId);
-    
-    return new Response(JSON.stringify(newCategory), {
+    return new Response(JSON.stringify(category), {
       status: 201,
       headers: { 'Content-Type': 'application/json' }
     });

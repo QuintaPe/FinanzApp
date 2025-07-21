@@ -1,4 +1,5 @@
-import { db } from '../../lib/database.js';
+import { Transaction } from '../../lib/models/Transaction.js';
+import { Category } from '../../lib/models/Category.js';
 
 export async function GET({ request, url }) {
   try {
@@ -12,7 +13,7 @@ export async function GET({ request, url }) {
     if (searchParams.get('endDate')) filters.endDate = searchParams.get('endDate');
     if (searchParams.get('limit')) filters.limit = parseInt(searchParams.get('limit'));
     
-    const transactions = await db.getTransactions(userId, filters);
+    const transactions = await Transaction.findByUser(userId, filters);
     
     return new Response(JSON.stringify(transactions), {
       status: 200,
@@ -41,9 +42,8 @@ export async function POST({ request }) {
       });
     }
     
-    const transactionId = await db.createTransaction(userId, categoryId, type, amount, description, date);
-    console.log(transactionId);
-    const transaction = await db.getTransactionById(transactionId);
+    const transactionId = await Transaction.create(userId, categoryId, type, amount, description, date);
+    const transaction = await Transaction.findById(transactionId);
     
     return new Response(JSON.stringify(transaction), {
       status: 201,
@@ -73,8 +73,8 @@ export async function PUT({ request, url }) {
     const body = await request.json();
     const { categoryId, amount, description, date } = body;
     
-    await db.updateTransaction(id, categoryId, amount, description, date);
-    const transaction = await db.getTransactionById(id);
+    await Transaction.update(id, { categoryId, amount, description, date });
+    const transaction = await Transaction.findById(id);
     
     return new Response(JSON.stringify(transaction), {
       status: 200,
@@ -101,7 +101,7 @@ export async function DELETE({ request, url }) {
       });
     }
     
-    await db.deleteTransaction(id);
+    await Transaction.delete(id);
     
     return new Response(JSON.stringify({ message: 'Transaction deleted successfully' }), {
       status: 200,

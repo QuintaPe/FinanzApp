@@ -3,14 +3,15 @@ import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
 import Button from '../components/Button.astro';
 import Modal from '../components/Modal.astro';
-import { api, formatters } from '../lib/api.js';
+import Goal from '../repository/Goal.js';
+import { formatters } from '../utils/index.js';
 
 // Fetch real data from the API
 let goals;
 let goalStats;
 
 try {
-  goals = await api.getGoals();
+  goals = await Goal.getGoals();
   
   // Calculate goal statistics
   const totalGoals = goals.length;

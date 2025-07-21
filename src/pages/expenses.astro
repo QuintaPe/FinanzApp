@@ -5,7 +5,9 @@ import Button from '../components/Button.astro';
 import Table from '../components/Table.astro';
 import CategoryTag from '../components/CategoryTag.astro';
 import Modal from '../components/Modal.astro';
-import { api, formatters } from '../lib/api.js';
+import Transaction from '../repository/Transaction.js';
+import Category from '../repository/Category.js';
+import { formatters } from '../utils/index.js';
 
 // Fetch real data from the API
 let expenses;
@@ -13,8 +15,8 @@ let expenseCategories;
 let expenseStats;
 
 try {
-  expenses = await api.getTransactions({ type: 'expense' });
-  expenseCategories = await api.getCategories('expense');
+  expenses = await Transaction.getTransactions({ type: 'expense' });
+  expenseCategories = await Category.getCategories('expense');
   
   // Calculate expense statistics
   const totalExpense = expenses.reduce((sum, exp) => sum + exp.amount, 0);
