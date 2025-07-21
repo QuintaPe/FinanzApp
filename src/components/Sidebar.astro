@@ -78,6 +78,8 @@ const { currentPage = '/' } = Astro.props;
     border-radius: 16px 0 0 16px;
     margin: 16px 0 16px 16px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    z-index: 1001;
   }
 
   .user-profile {
@@ -128,6 +130,7 @@ const { currentPage = '/' } = Astro.props;
     transition: all 0.2s ease;
     font-weight: 500;
     font-size: 14px;
+    min-height: 44px;
   }
 
   .nav-item:hover {
@@ -146,6 +149,7 @@ const { currentPage = '/' } = Astro.props;
     height: 20px;
     margin-right: 12px;
     color: inherit;
+    flex-shrink: 0;
   }
 
   .logo {
@@ -171,25 +175,64 @@ const { currentPage = '/' } = Astro.props;
     letter-spacing: 1px;
   }
 
+  /* Mobile Styles */
   @media (max-width: 768px) {
     .sidebar {
-      width: 80px;
-      padding: 16px 8px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 280px;
+      margin: 0;
+      border-radius: 0;
+      transform: translateX(-100%);
+      z-index: 1001;
+    }
+
+    .sidebar.mobile-open {
+      transform: translateX(0);
     }
 
     .user-name,
     .nav-text,
     .logo-text {
-      display: none;
+      display: block;
     }
 
     .nav-item {
-      justify-content: center;
-      padding: 12px 8px;
+      justify-content: flex-start;
+      padding: 12px 16px;
     }
 
     .nav-icon {
-      margin-right: 0;
+      margin-right: 12px;
+    }
+
+    /* Close button for mobile */
+    .sidebar::before {
+      content: '';
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 24px;
+      height: 24px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 20 20'%3E%3Cpath fill-rule='evenodd' d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E") no-repeat center;
+      cursor: pointer;
+      z-index: 1002;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .sidebar {
+      width: 100%;
+    }
+  }
+
+  /* Touch-friendly improvements */
+  @media (hover: none) and (pointer: coarse) {
+    .nav-item {
+      min-height: 48px;
+      padding: 16px;
     }
   }
 </style> 

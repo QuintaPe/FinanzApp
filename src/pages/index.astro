@@ -35,7 +35,7 @@ try {
   <div class="dashboard-header">
     <h1>Dashboard Financiero</h1>
     <div class="header-actions">
-      <Button variant="outline" size="small">
+      <Button variant="outline" size="small" class="mobile-hidden">
         <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
         </svg>
@@ -120,26 +120,26 @@ try {
           <svg class="quick-action-icon" fill="currentColor" viewBox="0 0 20 20" style="color: #F44336;">
             <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"/>
           </svg>
-          Nuevo gasto
+          <span class="quick-action-text">Nuevo gasto</span>
         </button>
         <button class="quick-action-btn" onclick="openNewIncomeModal()">
           <svg class="quick-action-icon" fill="currentColor" viewBox="0 0 20 20" style="color: #4CAF50;">
             <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/>
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
           </svg>
-          Nuevo ingreso
+          <span class="quick-action-text">Nuevo ingreso</span>
         </button>
         <button class="quick-action-btn" onclick="openBudgetModal()">
           <svg class="quick-action-icon" fill="currentColor" viewBox="0 0 20 20" style="color: #2196F3;">
             <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
           </svg>
-          Nuevo presupuesto
+          <span class="quick-action-text">Nuevo presupuesto</span>
         </button>
         <button class="quick-action-btn" onclick="openGoalModal()">
           <svg class="quick-action-icon" fill="currentColor" viewBox="0 0 20 20" style="color: #9C27B0;">
             <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
           </svg>
-          Nueva meta
+          <span class="quick-action-text">Nueva meta</span>
         </button>
       </div>
     </Card>
@@ -150,29 +150,58 @@ try {
       icon="<path d='M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z'/>"
     >
       {recentTransactions?.length > 0 ? (
-        <Table headers={['Descripción', 'Categoría', 'Tipo', 'Monto', 'Fecha']}>
-          {recentTransactions.map((transaction: any) => (
-            <tr>
-              <td>{transaction.description}</td>
-              <td>
-                <CategoryTag 
-                  category={transaction.category_name} 
-                  color={transaction.category_color}
-                  icon={transaction.category_icon}
-                />
-              </td>
-              <td>
-                <span class={`transaction-type ${transaction.type}`}>
-                  {transaction.type === 'income' ? 'Ingreso' : 'Gasto'}
-                </span>
-              </td>
-              <td class={`amount ${transaction.type}`}>
-                {transaction.type === 'income' ? '+' : '-'}{formatters.currency(transaction.amount)}
-              </td>
-              <td>{formatters.date(transaction.date)}</td>
-            </tr>
-          ))}
-        </Table>
+        <div class="transactions-container">
+          <Table headers={['Descripción', 'Categoría', 'Tipo', 'Monto', 'Fecha']} class="mobile-hidden">
+            {recentTransactions.map((transaction: any) => (
+              <tr>
+                <td>{transaction.description}</td>
+                <td>
+                  <CategoryTag 
+                    category={transaction.category_name} 
+                    color={transaction.category_color}
+                    icon={transaction.category_icon}
+                  />
+                </td>
+                <td>
+                  <span class={`transaction-type ${transaction.type}`}>
+                    {transaction.type === 'income' ? 'Ingreso' : 'Gasto'}
+                  </span>
+                </td>
+                <td class={`amount ${transaction.type}`}>
+                  {transaction.type === 'income' ? '+' : '-'}{formatters.currency(transaction.amount)}
+                </td>
+                <td>{formatters.date(transaction.date)}</td>
+              </tr>
+            ))}
+          </Table>
+          
+          <!-- Mobile Transactions List -->
+          <div class="mobile-transactions">
+            {recentTransactions.map((transaction: any) => (
+              <div class="mobile-transaction-item">
+                <div class="transaction-header">
+                  <div class="transaction-info">
+                    <h4>{transaction.description}</h4>
+                    <CategoryTag 
+                      category={transaction.category_name} 
+                      color={transaction.category_color}
+                      icon={transaction.category_icon}
+                    />
+                  </div>
+                  <div class={`transaction-amount ${transaction.type}`}>
+                    {transaction.type === 'income' ? '+' : '-'}{formatters.currency(transaction.amount)}
+                  </div>
+                </div>
+                <div class="transaction-footer">
+                  <span class={`transaction-type ${transaction.type}`}>
+                    {transaction.type === 'income' ? 'Ingreso' : 'Gasto'}
+                  </span>
+                  <span class="transaction-date">{formatters.date(transaction.date)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       ) : (
         <div class="empty-state">
           <p>No hay transacciones recientes</p>
@@ -270,6 +299,7 @@ try {
       align-items: center;
       justify-content: center;
       color: white;
+      flex-shrink: 0;
     }
 
     .income-icon {
@@ -327,6 +357,7 @@ try {
       align-items: center;
       gap: 12px;
       width: 100%;
+      min-height: 60px;
     }
 
     .quick-action-btn:hover {
@@ -337,6 +368,11 @@ try {
     .quick-action-icon {
       width: 24px;
       height: 24px;
+      flex-shrink: 0;
+    }
+
+    .quick-action-text {
+      flex: 1;
     }
 
     .transaction-type {
@@ -435,6 +471,151 @@ try {
 
     .empty-state p {
       font-size: 16px;
+    }
+
+    /* Mobile Styles */
+    .mobile-hidden {
+      display: block;
+    }
+
+    .mobile-transactions {
+      display: none;
+    }
+
+    .mobile-transaction-item {
+      background: #2C2C2C;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .transaction-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .transaction-info h4 {
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .transaction-amount {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .transaction-amount.income {
+      color: #4CAF50;
+    }
+
+    .transaction-amount.expense {
+      color: #F44336;
+    }
+
+    .transaction-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .transaction-date {
+      color: #888888;
+      font-size: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header h1 {
+        font-size: 24px;
+      }
+
+      .mobile-hidden {
+        display: none !important;
+      }
+
+      .mobile-transactions {
+        display: block;
+      }
+
+      .summary-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+      }
+
+      .summary-icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      .summary-amount {
+        font-size: 20px;
+      }
+
+      .quick-actions {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .quick-action-btn {
+        padding: 16px;
+        min-height: 56px;
+      }
+
+      .chart-container {
+        height: 250px;
+      }
+
+      .goal-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .goal-percentage {
+        margin-left: 0;
+        align-self: flex-end;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .summary-content {
+        gap: 8px;
+      }
+
+      .summary-icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      .summary-amount {
+        font-size: 18px;
+      }
+
+      .quick-action-btn {
+        padding: 12px;
+        font-size: 13px;
+      }
+
+      .chart-container {
+        height: 200px;
+      }
+    }
+
+    /* Touch-friendly improvements */
+    @media (hover: none) and (pointer: coarse) {
+      .quick-action-btn {
+        min-height: 64px;
+      }
     }
   </style>
 

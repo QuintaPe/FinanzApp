@@ -25,12 +25,14 @@ const { headers, class: className = '' } = Astro.props;
 <style>
   .table-container {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .table {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
+    min-width: 600px;
   }
 
   .table th {
@@ -43,6 +45,7 @@ const { headers, class: className = '' } = Astro.props;
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    white-space: nowrap;
   }
 
   .table td {
@@ -62,5 +65,45 @@ const { headers, class: className = '' } = Astro.props;
 
   .table tbody tr:last-child td {
     border-bottom: none;
+  }
+
+  /* Mobile Styles */
+  @media (max-width: 768px) {
+    .table {
+      font-size: 13px;
+      min-width: 500px;
+    }
+
+    .table th,
+    .table td {
+      padding: 12px 8px;
+    }
+
+    .table th {
+      font-size: 11px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .table {
+      font-size: 12px;
+      min-width: 400px;
+    }
+
+    .table th,
+    .table td {
+      padding: 8px 6px;
+    }
+
+    .table th {
+      font-size: 10px;
+    }
+  }
+
+  /* Touch-friendly improvements */
+  @media (hover: none) and (pointer: coarse) {
+    .table tbody tr:hover {
+      background: transparent;
+    }
   }
 </style> 

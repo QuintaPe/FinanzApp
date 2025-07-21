@@ -1,92 +1,68 @@
 ---
 export interface Props {
-  category: 'food' | 'transport' | 'entertainment' | 'shopping' | 'health' | 'education' | 'housing' | 'utilities' | 'salary' | 'freelance' | 'investment' | 'gift' | 'other';
+  category: string;
+  color?: string;
+  icon?: string;
   text?: string;
 }
 
-const { category, text } = Astro.props;
+const { category, color, icon, text } = Astro.props;
 
 const categoryText = text || category.charAt(0).toUpperCase() + category.slice(1);
+const categoryColor = color || '#9E9E9E';
 ---
 
-<span class={`category-tag category-${category}`}>
-  {categoryText}
+<span class="category-tag" style={`background-color: ${categoryColor}`}>
+  {icon && <span class="category-icon">{icon}</span>}
+  <span class="category-text">{categoryText}</span>
 </span>
 
 <style>
   .category-tag {
-    padding: 4px 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
     border-radius: 12px;
     font-size: 12px;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    color: white;
+    white-space: nowrap;
   }
 
-  /* Expense Categories */
-  .category-food {
-    background: #FF9800;
-    color: white;
+  .category-icon {
+    font-size: 14px;
   }
 
-  .category-transport {
-    background: #2196F3;
-    color: white;
+  .category-text {
+    font-size: 11px;
   }
 
-  .category-entertainment {
-    background: #9C27B0;
-    color: white;
+  /* Mobile Styles */
+  @media (max-width: 768px) {
+    .category-tag {
+      padding: 4px 8px;
+      gap: 4px;
+    }
+
+    .category-icon {
+      font-size: 12px;
+    }
+
+    .category-text {
+      font-size: 10px;
+    }
   }
 
-  .category-shopping {
-    background: #E91E63;
-    color: white;
-  }
+  @media (max-width: 480px) {
+    .category-tag {
+      padding: 3px 6px;
+    }
 
-  .category-health {
-    background: #F44336;
-    color: white;
-  }
-
-  .category-education {
-    background: #3F51B5;
-    color: white;
-  }
-
-  .category-housing {
-    background: #795548;
-    color: white;
-  }
-
-  .category-utilities {
-    background: #607D8B;
-    color: white;
-  }
-
-  /* Income Categories */
-  .category-salary {
-    background: #4CAF50;
-    color: white;
-  }
-
-  .category-freelance {
-    background: #8BC34A;
-    color: white;
-  }
-
-  .category-investment {
-    background: #FFC107;
-    color: white;
-  }
-
-  .category-gift {
-    background: #FF5722;
-    color: white;
-  }
-
-  .category-other {
-    background: #9E9E9E;
-    color: white;
+    .category-text {
+      font-size: 9px;
+    }
   }
 </style> 

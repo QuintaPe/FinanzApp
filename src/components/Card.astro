@@ -48,6 +48,7 @@ const { title, icon, class: className = '' } = Astro.props;
     width: 20px;
     height: 20px;
     color: #4CAF50;
+    flex-shrink: 0;
   }
 
   .card-title {
@@ -59,5 +60,36 @@ const { title, icon, class: className = '' } = Astro.props;
 
   .card-content {
     color: #cccccc;
+  }
+
+  /* Mobile Styles */
+  @media (max-width: 768px) {
+    .card {
+      padding: 16px;
+      border-radius: 8px;
+    }
+
+    .card-header {
+      margin-bottom: 16px;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card {
+      padding: 12px;
+    }
+
+    .card-header {
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 15px;
+    }
   }
 </style> 

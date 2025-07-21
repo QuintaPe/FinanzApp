@@ -13,20 +13,84 @@ const { title, currentPage = '/' } = Astro.props;
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1A1A1A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FinanzApp">
   <title>{title}</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="/styles/globals.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/favicon.svg">
 </head>
 <body>
   <div class="app-container">
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+        </svg>
+      </button>
+      <h1 class="mobile-title">FinanzApp</h1>
+      <div class="mobile-actions">
+        <button class="mobile-action-btn" aria-label="Notifications">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
     <Sidebar currentPage={currentPage} />
+
+    <!-- Main Content -->
     <main class="main-content">
       <slot />
     </main>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+      <a href="/" class={`mobile-nav-item ${currentPage === '/' ? 'active' : ''}`}>
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+        </svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="/expenses" class={`mobile-nav-item ${currentPage === '/expenses' ? 'active' : ''}`}>
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"/>
+        </svg>
+        <span>Gastos</span>
+      </a>
+      <a href="/income" class={`mobile-nav-item ${currentPage === '/income' ? 'active' : ''}`}>
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/>
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
+        </svg>
+        <span>Ingresos</span>
+      </a>
+      <a href="/budgets" class={`mobile-nav-item ${currentPage === '/budgets' ? 'active' : ''}`}>
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+        </svg>
+        <span>Presupuestos</span>
+      </a>
+      <a href="/goals" class={`mobile-nav-item ${currentPage === '/goals' ? 'active' : ''}`}>
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+        <span>Metas</span>
+      </a>
+    </nav>
+
+    <!-- Overlay for mobile menu -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
   </div>
 </body>
 </html>
-
 
 <style is:global>
   * {
@@ -41,12 +105,14 @@ const { title, currentPage = '/' } = Astro.props;
     min-height: 100vh;
     color: #ffffff;
     line-height: 1.6;
+    overflow-x: hidden;
   }
 
   .app-container {
     display: flex;
     min-height: 100vh;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
   }
 
   .main-content {
@@ -57,6 +123,118 @@ const { title, currentPage = '/' } = Astro.props;
     margin: 16px 16px 16px 0;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     overflow-y: auto;
+    transition: all 0.3s ease;
+  }
+
+  /* Mobile Header */
+  .mobile-header {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: #1A1A1A;
+    padding: 16px;
+    border-bottom: 1px solid #333;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .menu-toggle {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+  }
+
+  .menu-toggle:hover {
+    background: #333;
+  }
+
+  .mobile-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  .mobile-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .mobile-action-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+  }
+
+  .mobile-action-btn:hover {
+    background: #333;
+  }
+
+  /* Mobile Navigation */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: #1A1A1A;
+    border-top: 1px solid #333;
+    padding: 8px 16px;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+  }
+
+  .mobile-nav {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #888888;
+    font-size: 12px;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    min-width: 60px;
+  }
+
+  .mobile-nav-item:hover {
+    color: #ffffff;
+    background: #333;
+  }
+
+  .mobile-nav-item.active {
+    color: #4CAF50;
+  }
+
+  .mobile-nav-item svg {
+    margin-bottom: 4px;
+  }
+
+  /* Mobile Overlay */
+  .mobile-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
   }
 
   /* Grid System */
@@ -81,7 +259,7 @@ const { title, currentPage = '/' } = Astro.props;
     margin-bottom: 24px;
   }
 
-  /* Responsive */
+  /* Responsive Design */
   @media (max-width: 1200px) {
     .grid-4 {
       grid-template-columns: repeat(2, 1fr);
@@ -89,20 +267,46 @@ const { title, currentPage = '/' } = Astro.props;
   }
 
   @media (max-width: 768px) {
+    .mobile-header {
+      display: flex;
+    }
+
+    .mobile-nav {
+      display: flex;
+    }
+
     .app-container {
       flex-direction: column;
+      padding-top: 60px;
+      padding-bottom: 80px;
     }
 
     .main-content {
       margin: 0;
       border-radius: 0;
       padding: 16px;
+      min-height: calc(100vh - 140px);
     }
 
     .grid-2,
     .grid-3,
     .grid-4 {
       grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .mb-3 {
+      margin-bottom: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .main-content {
+      padding: 12px;
+    }
+
+    .grid {
+      gap: 12px;
     }
   }
 
@@ -123,4 +327,44 @@ const { title, currentPage = '/' } = Astro.props;
   ::-webkit-scrollbar-thumb:hover {
     background: #444;
   }
+
+  /* Touch-friendly improvements */
+  @media (hover: none) and (pointer: coarse) {
+    button, a, .nav-item {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
 </style>
+
+<script>
+  // Mobile menu functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('mobileOverlay');
+
+    if (menuToggle && sidebar && overlay) {
+      menuToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('mobile-open');
+        overlay.classList.toggle('active');
+        document.body.classList.toggle('menu-open');
+      });
+
+      overlay.addEventListener('click', function() {
+        sidebar.classList.remove('mobile-open');
+        overlay.classList.remove('active');
+        document.body.classList.remove('menu-open');
+      });
+    }
+
+    // Close menu on window resize
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        sidebar?.classList.remove('mobile-open');
+        overlay?.classList.remove('active');
+        document.body.classList.remove('menu-open');
+      }
+    });
+  });
+</script>
