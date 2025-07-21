@@ -51,7 +51,7 @@ try {
       <p>Gestiona tus presupuestos por categoría</p>
     </div>
     <div class="header-actions">
-      <Button variant="primary" size="small" onclick="openNewBudgetModal()">
+      <Button id="newBudgetBtn" variant="primary" size="small">
         <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
         </svg>
@@ -220,7 +220,7 @@ try {
       </div>
       
       <div class="form-actions">
-        <button type="button" class="btn-secondary" onclick="closeNewBudgetModal()">Cancelar</button>
+        <button id="closeModalBtn" type="button" class="btn-secondary" onclick={"closeModal()"}>Cancelar</button>
         <button type="submit" class="btn-primary">Guardar Presupuesto</button>
       </div>
     </form>
@@ -474,25 +474,28 @@ try {
       }
     });
 
-    function openNewBudgetModal() {
+    const button = document.getElementById('newBudgetBtn');
+    if (button) {
+      button.addEventListener('click', () => {
+        const modal = document.getElementById('newBudgetModal');
+        if (modal) {
+          modal.showModal();
+        }
+      });
+    }
+
+    const closeModal = () => {
       const modal = document.getElementById('newBudgetModal');
       if (modal) {
-        modal.classList.add('show');
+        modal.close();
       }
     }
 
-    function closeNewBudgetModal() {
-      const modal = document.getElementById('newBudgetModal');
-      if (modal) {
-        modal.classList.remove('show');
-        // Reset form
-        document.querySelector('.budget-form').reset();
-        const today = new Date().toISOString().split('T')[0];
-        const dateInput = document.getElementById('budgetStartDate');
-        if (dateInput) {
-          dateInput.value = today;
-        }
-      }
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    if (closeModalBtn) {
+      closeModalBtn.addEventListener('click', () => {
+        closeModal();
+      });
     }
 
     async function saveBudget(event) {
@@ -516,7 +519,7 @@ try {
         });
 
         if (response.ok) {
-          closeNewBudgetModal();
+          closeModal();
           // Reload page to show new data
           window.location.reload();
         } else {
@@ -541,12 +544,6 @@ try {
       }
     }
 
-    // Close modal when clicking outside
-    document.addEventListener('click', function(event) {
-      const modal = document.getElementById('newBudgetModal');
-      if (event.target === modal) {
-        closeNewBudgetModal();
-      }
-    });
+
   </script>
 </Layout> 

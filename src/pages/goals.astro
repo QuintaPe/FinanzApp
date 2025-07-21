@@ -51,7 +51,7 @@ try {
       <p>Establece y alcanza tus objetivos financieros</p>
     </div>
     <div class="header-actions">
-      <Button variant="primary" size="small" onclick="openNewGoalModal()">
+      <Button id="newGoalBtn" variant="primary" size="small">
         <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
         </svg>
@@ -238,7 +238,7 @@ try {
       </div>
       
       <div class="form-actions">
-        <button type="button" class="btn-secondary" onclick="closeNewGoalModal()">Cancelar</button>
+        <button id="closeModalBtn" type="button" class="btn-secondary" onclick={"closeModal()"}>Cancelar</button>
         <button type="submit" class="btn-primary">Guardar Meta</button>
       </div>
     </form>
@@ -253,7 +253,7 @@ try {
       </div>
       
       <div class="form-actions">
-        <button type="button" class="btn-secondary" onclick="closeUpdateProgressModal()">Cancelar</button>
+        <button id="closeProgressModalBtn" type="button" class="btn-secondary" onclick={"closeProgressModal()"}>Cancelar</button>
         <button type="submit" class="btn-primary">Actualizar</button>
       </div>
     </form>
@@ -624,37 +624,49 @@ try {
       }
     });
 
-    function openNewGoalModal() {
+    const button = document.getElementById('newGoalBtn');
+    if (button) {
+      button.addEventListener('click', () => {
+        const modal = document.getElementById('newGoalModal');
+        if (modal) {
+          modal.showModal();
+        }
+      });
+    }
+
+    const closeModal = () => {
       const modal = document.getElementById('newGoalModal');
       if (modal) {
-        modal.classList.add('show');
+        modal.close();
       }
     }
 
-    function closeNewGoalModal() {
-      const modal = document.getElementById('newGoalModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    if (closeModalBtn) {
+      closeModalBtn.addEventListener('click', () => {
+        closeModal();
+      });
+    }
+
+    const closeProgressModal = () => {
+      const modal = document.getElementById('updateProgressModal');
       if (modal) {
-        modal.classList.remove('show');
-        // Reset form
-        document.querySelector('.goal-form').reset();
+        modal.close();
       }
+    }
+
+    const closeProgressModalBtn = document.getElementById('closeProgressModalBtn');
+    if (closeProgressModalBtn) {
+      closeProgressModalBtn.addEventListener('click', () => {
+        closeProgressModal();
+      });
     }
 
     function openUpdateProgressModal(goalId) {
       currentGoalId = goalId;
       const modal = document.getElementById('updateProgressModal');
       if (modal) {
-        modal.classList.add('show');
-      }
-    }
-
-    function closeUpdateProgressModal() {
-      const modal = document.getElementById('updateProgressModal');
-      if (modal) {
-        modal.classList.remove('show');
-        // Reset form
-        document.querySelector('.progress-form').reset();
-        currentGoalId = null;
+        modal.showModal();
       }
     }
 
@@ -678,7 +690,7 @@ try {
         });
 
         if (response.ok) {
-          closeNewGoalModal();
+          closeModal();
           // Reload page to show new data
           window.location.reload();
         } else {
@@ -709,7 +721,7 @@ try {
         });
 
         if (response.ok) {
-          closeUpdateProgressModal();
+          closeProgressModal();
           // Reload page to show updated data
           window.location.reload();
         } else {
@@ -738,18 +750,6 @@ try {
       }
     }
 
-    // Close modals when clicking outside
-    document.addEventListener('click', function(event) {
-      const newGoalModal = document.getElementById('newGoalModal');
-      const updateProgressModal = document.getElementById('updateProgressModal');
-      
-      if (event.target === newGoalModal) {
-        closeNewGoalModal();
-      }
-      
-      if (event.target === updateProgressModal) {
-        closeUpdateProgressModal();
-      }
-    });
+
   </script>
 </Layout> 

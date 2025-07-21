@@ -54,7 +54,7 @@ try {
         </svg>
         Filtros
       </Button>
-      <Button variant="primary" size="small" onclick="openNewIncomeModal()">
+      <Button id="newIncomeBtn" variant="primary" size="small">
         <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
         </svg>
@@ -184,7 +184,7 @@ try {
       </div>
       
       <div class="form-actions">
-        <button type="button" class="btn-secondary" onclick="closeNewIncomeModal()">Cancelar</button>
+        <button id="closeModalBtn" type="button" class="btn-secondary" onclick={"closeModal()"}>Cancelar</button>
         <button type="submit" class="btn-primary">Guardar Ingreso</button>
       </div>
     </form>
@@ -399,25 +399,28 @@ try {
       }
     });
 
-    function openNewIncomeModal() {
+    const button = document.getElementById('newIncomeBtn');
+    if (button) {
+      button.addEventListener('click', () => {
+        const modal = document.getElementById('newIncomeModal');
+        if (modal) {
+          modal.showModal();
+        }
+      });
+    }
+
+    const closeModal = () => {
       const modal = document.getElementById('newIncomeModal');
       if (modal) {
-        modal.classList.add('show');
+        modal.close();
       }
     }
 
-    function closeNewIncomeModal() {
-      const modal = document.getElementById('newIncomeModal');
-      if (modal) {
-        modal.classList.remove('show');
-        // Reset form
-        document.querySelector('.income-form').reset();
-        const today = new Date().toISOString().split('T')[0];
-        const dateInput = document.getElementById('incomeDate');
-        if (dateInput) {
-          dateInput.value = today;
-        }
-      }
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    if (closeModalBtn) {
+      closeModalBtn.addEventListener('click', () => {
+        closeModal();
+      });
     }
 
     async function saveIncome(event) {
@@ -442,7 +445,7 @@ try {
         });
 
         if (response.ok) {
-          closeNewIncomeModal();
+          closeModal();
           // Reload page to show new data
           window.location.reload();
         } else {
@@ -481,12 +484,6 @@ try {
       }
     }
 
-    // Close modal when clicking outside
-    document.addEventListener('click', function(event) {
-      const modal = document.getElementById('newIncomeModal');
-      if (event.target === modal) {
-        closeNewIncomeModal();
-      }
-    });
+
   </script>
 </Layout> 
