@@ -192,12 +192,9 @@ const { title, currentPage = '/' } = Astro.props;
     border-top: 1px solid #333;
     padding: 8px 16px;
     padding-bottom: calc(8px + env(safe-area-inset-bottom));
-  }
-
-  .mobile-nav {
-    display: flex;
     justify-content: space-around;
   }
+
 
   .mobile-nav-item {
     display: flex;
@@ -269,6 +266,15 @@ const { title, currentPage = '/' } = Astro.props;
   @media (max-width: 768px) {
     .mobile-header {
       display: flex;
+      height: 60px;
+      align-items: center;
+      button {
+        padding: 0 16px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
 
     .mobile-nav {

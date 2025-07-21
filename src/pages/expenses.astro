@@ -198,14 +198,14 @@ try {
     }
 
     .header-content h1 {
-      color: #ffffff;
+      color: var(--color-text-primary);
       font-size: 32px;
       font-weight: 700;
       margin-bottom: 8px;
     }
 
     .header-content p {
-      color: #cccccc;
+      color: var(--color-text-secondary);
       font-size: 16px;
     }
 
@@ -215,8 +215,8 @@ try {
     }
 
     .summary-card {
-      background: #1A1A1A !important;
-      border: 1px solid #333;
+      background: var(--color-bg-primary) !important;
+      border: 1px solid var(--color-border-primary);
     }
 
     .summary-content {
@@ -248,27 +248,27 @@ try {
     }
 
     .summary-info h3 {
-      color: #cccccc;
+      color: var(--color-text-secondary);
       font-size: 14px;
       font-weight: 500;
       margin-bottom: 4px;
     }
 
     .summary-amount {
-      color: #ffffff;
+      color: var(--color-text-primary);
       font-size: 24px;
       font-weight: 700;
       margin-bottom: 4px;
     }
 
     .summary-period {
-      color: #888888;
+      color: var(--color-text-tertiary);
       font-size: 12px;
     }
 
     .amount {
       font-weight: 600;
-      color: #F44336;
+      color: var(--color-error);
     }
 
     .table-actions {
@@ -289,21 +289,21 @@ try {
     }
 
     .edit-btn {
-      background: #2196F3;
-      color: white;
+      background: var(--color-info);
+      color: var(--color-text-primary);
     }
 
     .edit-btn:hover {
-      background: #1976D2;
+      background: var(--color-info-dark);
     }
 
     .delete-btn {
-      background: #F44336;
-      color: white;
+      background: var(--color-error);
+      color: var(--color-text-primary);
     }
 
     .delete-btn:hover {
-      background: #d32f2f;
+      background: var(--color-error-dark);
     }
 
     .expense-form {
@@ -319,7 +319,7 @@ try {
     }
 
     .form-group label {
-      color: #ffffff;
+      color: var(--color-text-primary);
       font-size: 14px;
       font-weight: 500;
     }
@@ -327,17 +327,17 @@ try {
     .form-group input,
     .form-group select {
       padding: 12px;
-      border: 1px solid #333;
+      border: 1px solid var(--color-border-primary);
       border-radius: 8px;
-      background: #2C2C2C;
-      color: #ffffff;
+      background: var(--color-bg-secondary);
+      color: var(--color-text-primary);
       font-size: 14px;
     }
 
     .form-group input:focus,
     .form-group select:focus {
       outline: none;
-      border-color: #6366f1;
+      border-color: var(--color-indigo);
     }
 
     .form-actions {
@@ -359,28 +359,28 @@ try {
     }
 
     .btn-primary {
-      background: #6366f1;
-      color: white;
+      background: var(--color-indigo);
+      color: var(--color-text-primary);
     }
 
     .btn-primary:hover {
-      background: #4f46e5;
+      background: var(--color-indigo-dark);
     }
 
     .btn-secondary {
-      background: #2C2C2C;
-      color: #ffffff;
-      border: 1px solid #333;
+      background: var(--color-bg-secondary);
+      color: var(--color-text-primary);
+      border: 1px solid var(--color-border-primary);
     }
 
     .btn-secondary:hover {
-      background: #333;
+      background: var(--color-bg-tertiary);
     }
 
     .empty-state {
       text-align: center;
       padding: 40px;
-      color: #888888;
+      color: var(--color-text-tertiary);
     }
 
     .empty-state p {
